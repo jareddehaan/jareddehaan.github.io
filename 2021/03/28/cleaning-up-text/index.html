@@ -130,7 +130,7 @@
 ## #   DefFirstDownTotal &lt;dbl&gt;, DefPenalties &lt;dbl&gt;, DefPenaltyYds &lt;dbl&gt;,
 ## #   DefFumbles &lt;dbl&gt;, DefInterceptions &lt;dbl&gt;, DefTotalTurnovers &lt;dbl&gt;,
 ## #   Team &lt;chr&gt;, Conference &lt;chr&gt;</code></pre>
-<p>I then mutated the Score to get ride of the ) that came after the Score. I used \ on the next parenthesis becuase it’s a special character and needed the \ to get rid of it. I then separated the Score into TeamScore and OpponentScore.</p>
+<p>I then mutated the Score to get ride of the ) that came after the Score. I used \ on the next parenthesis because it’s a special character and needed the \ to get rid of it. I then separated the Score into TeamScore and OpponentScore.</p>
 <pre class="r"><code>fbstats %&gt;% separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot;\\ &quot;) %&gt;% mutate(Score=gsub(&quot;)&quot;,&quot;&quot;,Score)) %&gt;% mutate(Score=gsub(&quot;\\(&quot;,&quot;&quot;,Score)) %&gt;% separate(Score, into=c(&quot;TeamScore&quot;, &quot;OpponentScore&quot;), sep=&quot;\\-&quot;)</code></pre>
 <pre><code>## # A tibble: 1,662 x 53
 ##     Game Date  HomeAway Opponent Outcome TeamScore OpponentScore PassingCmp
