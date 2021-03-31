@@ -89,7 +89,7 @@
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <p>I loaded my data sets that I will be using to prove that Illinois missed their shot at an NCAA Championship, but was Illinois really that good this year? Illinois was a #1 seed and ranked 2nd in the AP Poll entering the NCAA Tournament.</p>
 <p>Very early on in the Loyola Chicago Round of 32 game, it was very clear Illinois was outmatched, outplayed and would inevitably lose to the Ramblers. As an Illinois fan, I began to cry with about 6 minutes left because I knew we were gonna lose in the year everything seemed to go our way. Pure chaos is what I should have expected during March Madness.</p>
-<pre class="r"><code>collegebball &lt;- read_csv(&quot;cbbseason2021.csv&quot;)</code></pre>
+<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;cbbseason2021.csv&quot;)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
 ## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
 <pre><code>## 
@@ -120,7 +120,7 @@
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <p>I noticed I had 5 columns that were not needed so I used select() to take those 5 columns and remove them from both of my data frames</p>
-<pre class="r"><code>collegebball &lt;- collegebball %&gt;% select(-X9, -X12, -X15, -X18, -X21)
+<pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)
 oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
 
     </div>
