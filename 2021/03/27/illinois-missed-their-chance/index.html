@@ -139,7 +139,8 @@ oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</co
 <pre class="r"><code>ill &lt;- turnovers %&gt;% filter(School == &quot;Illinois NCAA&quot;)
 zag &lt;- turnovers %&gt;% filter(School == &quot;Gonzaga NCAA&quot;)
 bay &lt;- turnovers %&gt;% filter(School == &quot;Baylor NCAA&quot;)
-mich &lt;- turnovers %&gt;% filter(School == &quot;Michigan NCAA&quot;)</code></pre>
+mich &lt;- turnovers %&gt;% filter(School == &quot;Michigan NCAA&quot;)
+loy &lt;- turnovers %&gt;% filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
 <pre class="r"><code>avgtoforced &lt;- turnovers %&gt;% summarise(
     AvgTOforced = mean(TurnoversForcedpergame))</code></pre>
 <pre class="r"><code>avgtopergame &lt;- turnovers %&gt;% summarise(
@@ -161,7 +162,9 @@ geom_point(color=&quot;black&quot;) +
   geom_point(data=zag, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;red&quot;) + 
   geom_text_repel(data=zag, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Gonzaga&quot;), color=&quot;red&quot;) +
   geom_point(data=bay, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;green&quot;) + 
-  geom_text_repel(data=bay, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Baylor&quot;), color=&quot;green&quot;)</code></pre>
+  geom_text_repel(data=bay, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Baylor&quot;), color=&quot;green&quot;) + 
+   geom_point(data=loy, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;pink&quot;) + 
+  geom_text_repel(data=loy, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Loyola Chicago&quot;), color=&quot;pink&quot;) </code></pre>
 <p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 
     </div>
