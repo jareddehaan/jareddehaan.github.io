@@ -132,18 +132,19 @@ library(ggrepel)</code></pre>
 <p>I noticed I had 5 columns that were not needed so I used select() to take those 5 columns and remove them from both of my data frames</p>
 <pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)
 oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
-<p>The two data sets I’ll be using show the basic season stats of the team while the other shows the seasons stats of their opponents. I got this data for this season’s stats from the Sports Reference’s college basketball site. I’ll be mainly focusing on turnovers by Illinois compared to the rest of the NCAA as well as Illinois’ free throw percentage in comparison to other teams who won quite a few games this season.</p>
+<p>The two data sets I’ll be using show the basic season stats of the team while the other shows the seasons stats of their opponents. I got this data for this season’s stats from the Sports Reference’s college basketball site. I used left_join to merge the two data sets together. I’ll be mainly focusing on turnovers by Illinois compared to the rest of the NCAA as well as Illinois’ free throw percentage in comparison to other teams this season.</p>
 <pre class="r"><code>collegestats&lt;- collegebballstats %&gt;% left_join(oppbballstats, by=&quot;School&quot;)</code></pre>
+<p>Let’s take a closer look into the turnovers forced and given up by teams. I’m interested to see how Illinois stacks up with the rest of the NCAA when it comes to forcing turnovers and giving up turnovers. I had to mutate the data to get the Turnovers per game and Turnovers forced per game. To do this I took TeamTOV (TeamTotalTurnovers) divided by G.x (Games played) to find Turnovers per game. I also took OppTOV (OpponentTurnovers) divided by G.x (Games played) to find Turnovers forced per game.</p>
 <pre class="r"><code>turnovers &lt;- collegestats %&gt;%
   mutate(Turnoverspergame = TeamTOV/G.x) %&gt;% mutate(TurnoversForcedpergame = OppTOV/G.x) %&gt;% filter(G.x &gt; 10)</code></pre>
+<p>I created four new data frames of teams I wanted to focus on as well. Gonzaga and Baylor were 1 seeds that were the overall one and two seed in the NCAA Tournament (Illinois was number 3.) Loyola Chicago is the team that eliminated Illinois from March Madness in a 71-58 win.</p>
 <pre class="r"><code>ill &lt;- turnovers %&gt;% filter(School == &quot;Illinois NCAA&quot;)
 zag &lt;- turnovers %&gt;% filter(School == &quot;Gonzaga NCAA&quot;)
 bay &lt;- turnovers %&gt;% filter(School == &quot;Baylor NCAA&quot;)
-mich &lt;- turnovers %&gt;% filter(School == &quot;Michigan NCAA&quot;)
 loy &lt;- turnovers %&gt;% filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
 <pre class="r"><code>avgtoforced &lt;- turnovers %&gt;% summarise(
-    AvgTOforced = mean(TurnoversForcedpergame))</code></pre>
-<pre class="r"><code>avgtopergame &lt;- turnovers %&gt;% summarise(
+    AvgTOforced = mean(TurnoversForcedpergame))
+avgtopergame &lt;- turnovers %&gt;% summarise(
     Avgtopergame = mean(Turnoverspergame))</code></pre>
 <pre class="r"><code>ggplot(turnovers, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`)) +
   geom_vline(xintercept = 13.40379) +
@@ -165,7 +166,7 @@ geom_point(color=&quot;black&quot;) +
   geom_text_repel(data=bay, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Baylor&quot;), color=&quot;green&quot;) + 
    geom_point(data=loy, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;pink&quot;) + 
   geom_text_repel(data=loy, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Loyola Chicago&quot;), color=&quot;pink&quot;) </code></pre>
-<p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 
     </div>
   </article>
