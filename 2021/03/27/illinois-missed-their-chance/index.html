@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">Illinois missed their chance</h1>
@@ -129,7 +129,7 @@ library(ggrepel)</code></pre>
 ##   X21 = col_logical()
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
-<p>I noticed I had 5 columns that were not needed so I used select() to take those 5 columns and remove them from both of my data frames</p>
+<p>I noticed I had 5 columns that were not needed so I used select() to take those 5 columns and remove them from both of my data frames.</p>
 <pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)
 oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
 <p>The two data sets I’ll be using show the basic season stats of the team while the other shows the seasons stats of their opponents. I got this data for this season’s stats from the Sports Reference’s college basketball site. I used left_join to merge the two data sets together. I’ll be mainly focusing on turnovers by Illinois compared to the rest of the NCAA as well as Illinois’ free throw percentage in comparison to other teams this season.</p>
@@ -142,10 +142,12 @@ oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</co
 zag &lt;- turnovers %&gt;% filter(School == &quot;Gonzaga NCAA&quot;)
 bay &lt;- turnovers %&gt;% filter(School == &quot;Baylor NCAA&quot;)
 loy &lt;- turnovers %&gt;% filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
+<p>To find the vline (x intercept) and hline (y intercept). I found the Average Turnovers forced by taking the mean of the TurnoversForcedpergame for all 356 teams. I also found the teams’ Average turnovers per game by taking the mean of the Turnoverspergame for all 356 teams.</p>
 <pre class="r"><code>avgtoforced &lt;- turnovers %&gt;% summarise(
     AvgTOforced = mean(TurnoversForcedpergame))
 avgtopergame &lt;- turnovers %&gt;% summarise(
     Avgtopergame = mean(Turnoverspergame))</code></pre>
+<p>The first question we’ll look at is how good was Illinois compared to the rest of the NCAA. I will also pull 3 other teams from the NCAA to compare to Illinois. Those teams are Gonzaga, Baylor and Loyola Chicago.</p>
 <pre class="r"><code>ggplot(turnovers, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`)) +
   geom_vline(xintercept = 13.40379) +
   geom_hline(yintercept = 13.19193) +
@@ -154,8 +156,8 @@ geom_point(color=&quot;black&quot;) +
   theme_minimal() + 
   theme(
     plot.title = element_text(size = 13, face = &quot;bold&quot;),
-    axis.title = element_text(size = 7.5), 
-    plot.subtitle = element_text(size=9), 
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10), 
     panel.grid.minor = element_blank()
     ) +
   geom_point(data=ill, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;orange&quot;) + 
@@ -165,8 +167,13 @@ geom_point(color=&quot;black&quot;) +
   geom_point(data=bay, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;green&quot;) + 
   geom_text_repel(data=bay, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Baylor&quot;), color=&quot;green&quot;) + 
    geom_point(data=loy, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;pink&quot;) + 
-  geom_text_repel(data=loy, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Loyola Chicago&quot;), color=&quot;pink&quot;) </code></pre>
-<p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+  geom_text_repel(data=loy, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Loyola Chicago&quot;), color=&quot;pink&quot;) +
+  geom_text(aes(x=9.5, y=14, label=&quot;Bad TT, Bad TF&quot;)) +
+  geom_text(aes(x=9.5, y=12.5, label=&quot;Good TT, Bad TF&quot;)) +
+  geom_text(aes(x=18, y=14, label=&quot;Bad TT, Good TF&quot;)) +
+  geom_text(aes(x=18, y=12.5, label=&quot;Good TT, Good TF&quot;)) </code></pre>
+<p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+If you look at the graph, you’ll see that both 1 seeds seeded ahead of Illinois are far into the Good Team Turnovers and Good Turnovers Forced section. This means that they are good at handling the ball and do a very good job of forcing their opponents to give up the ball. Loyola Chicago is in this category as well. If you forgot from earlier, Loyola is the team that beat Illinois in the Round of 32 in the NCAA Tournament. So these three times are in the Good, Good section. Where is Illinois? If you look to the left of Baylor, Gonzaga and Loyola Chicago, you will find Illinois in the Good Team Turnovers and Bad Turnovers Forced section.They are hovering the line of Bad, Bad. This seems highly odd that the team ranked 2nd in the nation would be hovering on the Bad Team Turnovers and Bad Turnovers Forced line. This leads me to think that Illinois may have overperformed this year based on this graphic.</p>
 
     </div>
   </article>
