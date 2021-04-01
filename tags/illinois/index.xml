@@ -14,8 +14,8 @@
       
       <guid>/2021/03/27/illinois-missed-their-chance/</guid>
       <description>Illinois was a heavy favorite to win the 2021 NCAA Basketball National Championship but instead got ousted by the NCAA powerhouse Loyola Chicago in the Round of 32. I will be digging deep into stats to discover exactly why Illinois exited the tournament earlier than expected.
-I first loaded tidyverse into my project.
-library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ── ## ✓ ggplot2 3.3.3 ✓ purrr 0.</description>
+I first loaded four libraries that I might need for my data into my project.
+library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.</description>
     </item>
     
   </channel>

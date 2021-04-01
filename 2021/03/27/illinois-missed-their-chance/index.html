@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Illinois missed their chance</h1>
@@ -77,7 +77,7 @@
 
 
 <p>Illinois was a heavy favorite to win the 2021 NCAA Basketball National Championship but instead got ousted by the NCAA powerhouse Loyola Chicago in the Round of 32. I will be digging deep into stats to discover exactly why Illinois exited the tournament earlier than expected.</p>
-<p>I first loaded tidyverse into my project.</p>
+<p>I first loaded four libraries that I might need for my data into my project.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
@@ -87,6 +87,16 @@
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggalt)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
+##   method                  from   
+##   grid.draw.absoluteGrob  ggplot2
+##   grobHeight.absoluteGrob ggplot2
+##   grobWidth.absoluteGrob  ggplot2
+##   grobX.absoluteGrob      ggplot2
+##   grobY.absoluteGrob      ggplot2</code></pre>
+<pre class="r"><code>library(ggbeeswarm)
+library(ggrepel)</code></pre>
 <p>I loaded my data sets that I will be using to prove that Illinois missed their shot at an NCAA Championship, but was Illinois really that good this year? Illinois was a #1 seed and ranked 2nd in the AP Poll entering the NCAA Tournament.</p>
 <p>Very early on in the Loyola Chicago Round of 32 game, it was very clear Illinois was outmatched, outplayed and would inevitably lose to the Ramblers. As an Illinois fan, I began to cry with about 6 minutes left because I knew we were gonna lose in the year everything seemed to go our way. Pure chaos is what I should have expected during March Madness.</p>
 <pre class="r"><code>collegebballstats &lt;- read_csv(&quot;cbbseason2021.csv&quot;)</code></pre>
@@ -122,6 +132,37 @@
 <p>I noticed I had 5 columns that were not needed so I used select() to take those 5 columns and remove them from both of my data frames</p>
 <pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)
 oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
+<p>The two data sets I’ll be using show the basic season stats of the team while the other shows the seasons stats of their opponents. I got this data for this season’s stats from the Sports Reference’s college basketball site. I’ll be mainly focusing on turnovers by Illinois compared to the rest of the NCAA as well as Illinois’ free throw percentage in comparison to other teams who won quite a few games this season.</p>
+<pre class="r"><code>collegestats&lt;- collegebballstats %&gt;% left_join(oppbballstats, by=&quot;School&quot;)</code></pre>
+<pre class="r"><code>turnovers &lt;- collegestats %&gt;%
+  mutate(Turnoverspergame = TeamTOV/G.x) %&gt;% mutate(TurnoversForcedpergame = OppTOV/G.x) %&gt;% filter(G.x &gt; 10)</code></pre>
+<pre class="r"><code>ill &lt;- turnovers %&gt;% filter(School == &quot;Illinois NCAA&quot;)
+zag &lt;- turnovers %&gt;% filter(School == &quot;Gonzaga NCAA&quot;)
+bay &lt;- turnovers %&gt;% filter(School == &quot;Baylor NCAA&quot;)
+mich &lt;- turnovers %&gt;% filter(School == &quot;Michigan NCAA&quot;)</code></pre>
+<pre class="r"><code>avgtoforced &lt;- turnovers %&gt;% summarise(
+    AvgTOforced = mean(TurnoversForcedpergame))</code></pre>
+<pre class="r"><code>avgtopergame &lt;- turnovers %&gt;% summarise(
+    Avgtopergame = mean(Turnoverspergame))</code></pre>
+<pre class="r"><code>ggplot(turnovers, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`)) +
+  geom_vline(xintercept = 13.40379) +
+  geom_hline(yintercept = 13.19193) +
+geom_point(color=&quot;black&quot;) + 
+  labs(x=&quot;Turnovers Forced&quot;, y=&quot;Team Turnovers&quot;, title=&quot;Team turnovers and turnovers forced were not a strong suit for Illinois&quot;, subtitle=&quot;The Fighting Illini struggled to handle the ball and force their opponents to turn the ball over&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 13, face = &quot;bold&quot;),
+    axis.title = element_text(size = 7.5), 
+    plot.subtitle = element_text(size=9), 
+    panel.grid.minor = element_blank()
+    ) +
+  geom_point(data=ill, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;orange&quot;) + 
+  geom_text_repel(data=ill, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Illinois&quot;), color=&quot;orange&quot;) + 
+  geom_point(data=zag, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;red&quot;) + 
+  geom_text_repel(data=zag, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Gonzaga&quot;), color=&quot;red&quot;) +
+  geom_point(data=bay, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;green&quot;) + 
+  geom_text_repel(data=bay, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Baylor&quot;), color=&quot;green&quot;)</code></pre>
+<p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 
     </div>
   </article>
