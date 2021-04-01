@@ -152,11 +152,11 @@ avgtopergame &lt;- turnovers %&gt;% summarise(
   geom_vline(xintercept = 13.40379) +
   geom_hline(yintercept = 13.19193) +
 geom_point(color=&quot;black&quot;) + 
-  labs(x=&quot;Turnovers Forced&quot;, y=&quot;Team Turnovers&quot;, title=&quot;Team turnovers and turnovers forced were not a strong suit for Illinois&quot;, subtitle=&quot;The Fighting Illini struggled to handle the ball and force their opponents to turn the ball over&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  labs(x=&quot;Turnovers Forced Per Game&quot;, y=&quot;Team Turnovers Per Game&quot;, title=&quot;Team turnovers and turnovers forced were not a strong suit for Illinois&quot;, subtitle=&quot;The Fighting Illini struggled to handle the ball and force their opponents to turn the ball over&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() + 
   theme(
     plot.title = element_text(size = 13, face = &quot;bold&quot;),
-    axis.title = element_text(size = 8), 
+    axis.title = element_text(size = 9), 
     plot.subtitle = element_text(size=10), 
     panel.grid.minor = element_blank()
     ) +
