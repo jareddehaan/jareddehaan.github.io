@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">6 min read</span>
+    <span class="article-duration">7 min read</span>
     
 
     <h1 class="article-title">Illinois missed their chance</h1>
@@ -134,7 +134,7 @@ library(ggrepel)</code></pre>
 oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
 <p>The two data sets I’ll be using show the basic season stats of the team while the other shows the seasons stats of their opponents. I got this data for this season’s stats from the Sports Reference’s college basketball site. I used left_join to merge the two data sets together. I’ll be mainly focusing on turnovers by Illinois compared to the rest of the NCAA as well as Illinois’ free throw percentage in comparison to other teams this season.</p>
 <pre class="r"><code>collegestats&lt;- collegebballstats %&gt;% left_join(oppbballstats, by=&quot;School&quot;)</code></pre>
-<p>Let’s take a closer look into the turnovers forced and given up by teams. I’m interested to see how Illinois stacks up with the rest of the NCAA when it comes to forcing turnovers and giving up turnovers. I had to mutate the data to get the Turnovers per game and Turnovers forced per game. To do this I took TeamTOV (TeamTotalTurnovers) divided by G.x (Games played) to find Turnovers per game. I also took OppTOV (OpponentTurnovers) divided by G.x (Games played) to find Turnovers forced per game.</p>
+<p>Let’s take a closer look into the turnovers forced and given up by teams. I’m interested to see how Illinois stacks up with the rest of the NCAA when it comes to forcing turnovers and giving up turnovers. I had to mutate the data to get the Turnovers per game and Turnovers forced per game. To do this I took TeamTOV (TeamTotalTurnovers) divided by G.x (Games played) to find Turnovers per game. I also took OppTOV (OpponentTurnovers) divided by G.x (Games played) to find Turnovers forced per game. I also filtered out any team that did not play more than 10 games this season.</p>
 <pre class="r"><code>turnovers &lt;- collegestats %&gt;%
   mutate(Turnoverspergame = TeamTOV/G.x) %&gt;% mutate(TurnoversForcedpergame = OppTOV/G.x) %&gt;% filter(G.x &gt; 10)</code></pre>
 <p>I created four new data frames of teams I wanted to focus on as well. Gonzaga and Baylor were 1 seeds that were the overall one and two seed in the NCAA Tournament (Illinois was number 3.) Loyola Chicago is the team that eliminated Illinois from March Madness in a 71-58 win.</p>
@@ -174,6 +174,29 @@ geom_point(color=&quot;black&quot;) +
   geom_text(aes(x=18, y=12.5, label=&quot;Good TT, Good TF&quot;)) </code></pre>
 <p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 If you look at the graph, you’ll see that both 1 seeds seeded ahead of Illinois are far into the Good Team Turnovers and Good Turnovers Forced section. This means that they are good at handling the ball and do a very good job of forcing their opponents to give up the ball. Loyola Chicago is in this category as well. If you forgot from earlier, Loyola is the team that beat Illinois in the Round of 32 in the NCAA Tournament. So these three times are in the Good, Good section. Where is Illinois? If you look to the left of Baylor, Gonzaga and Loyola Chicago, you will find Illinois in the Good Team Turnovers and Bad Turnovers Forced section. They are hovering the line of Bad, Bad. This seems highly odd that the team ranked 2nd in the nation would be hovering on the Bad Team Turnovers and Bad Turnovers Forced line. This leads me to think that Illinois may have overperformed this year based on this graphic.</p>
+<p>Let’s look at another stat and how Illinois compares to the rest of the NCAA. We’ll look at Free Throw Percentage and how this compares to other teams that have won at least 20 games this season. I will also look at how many Free Throws each team has attempted this season. I’ll use a bubble chart to see how Illinois compares to these 29 other teams that had more than 20 wins.</p>
+<p>I mutated all of my dataframes so that the TeamFT% would become TeamFTPCT. This just makes it eaiser on my part to avoid percentage signs.</p>
+<pre class="r"><code>goodteams &lt;- turnovers %&gt;% filter(OverallW.x &gt; 20) %&gt;% mutate(TeamFTPCT = `TeamFT%`)</code></pre>
+<pre class="r"><code>ill &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;% filter(School == &quot;Illinois NCAA&quot;)
+zag &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Gonzaga NCAA&quot;)
+bay &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Baylor NCAA&quot;)
+loy &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
+<p>We will now look to see how Illinois compares to the other teams who have won 20 games. I again used Gonzaga, Baylor and Loyola Chicago to see how they compare individually to Illinois.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=goodteams, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x)) +    
+  geom_point(data=ill, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;orange&quot;) + 
+  geom_point(data=zag, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;red&quot;) + 
+  geom_point(data=bay, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;green&quot;)+ 
+  geom_point(data=loy, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;pink&quot;) + scale_size(range = c(4, 12), name=&quot;Wins&quot;) +
+labs(x=&quot;Team Free Throws Attempted&quot;, y=&quot;Free Throw Percentage&quot;, title=&quot;Apparently top ranked teams don&#39;t always have good free throw shooters&quot;, subtitle=&quot;Illinois ranked towards the bottom in Free Throw Percentage in comparison to other 20 win teams&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 7.5), 
+    plot.subtitle = element_text(size=8.5), 
+    panel.grid.minor = element_blank()
+    ) </code></pre>
+<p><img src="/2021/03/27/illinois-missed-their-chance/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 
     </div>
   </article>
