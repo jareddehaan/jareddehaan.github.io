@@ -191,7 +191,7 @@ loy &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == 
   geom_point(data=bay, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;green&quot;) +
   geom_text(aes(x=420, y=.685, label=&quot;Baylor&quot;), color=&quot;green&quot;) +
   geom_point(data=loy, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;blue&quot;) +
-   geom_text(aes(x=450, y=.74, label=&quot;Loyola Chicago&quot;), color=&quot;blue&quot;) +
+   geom_text(aes(x=450, y=.73, label=&quot;Loyola Chicago&quot;), color=&quot;blue&quot;) +
   scale_size(range = c(4, 12), name=&quot;Wins&quot;) +
 labs(x=&quot;Team Free Throws Attempted&quot;, y=&quot;Free Throw Percentage&quot;, title=&quot;Apparently top ranked teams don&#39;t always have good free throw shooters&quot;, subtitle=&quot;Illinois ranked towards the bottom in Free Throw Percentage in comparison to other 20 win teams&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() +
