@@ -151,7 +151,7 @@ avgtopergame &lt;- turnovers %&gt;% summarise(
 <pre class="r"><code>ggplot(turnovers, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`)) +
   geom_vline(xintercept = 13.40379) +
   geom_hline(yintercept = 13.19193) +
-geom_point(color=&quot;black&quot;) + 
+geom_point(color=&quot;grey&quot;) + 
   labs(x=&quot;Turnovers Forced Per Game&quot;, y=&quot;Team Turnovers Per Game&quot;, title=&quot;Team turnovers and turnovers forced were not a strong suit for Illinois&quot;, subtitle=&quot;The Fighting Illini struggled to handle the ball and force their opponents to turn the ball over&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() + 
   theme(
@@ -166,8 +166,8 @@ geom_point(color=&quot;black&quot;) +
   geom_text_repel(data=zag, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Gonzaga&quot;), color=&quot;red&quot;) +
   geom_point(data=bay, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;green&quot;) + 
   geom_text_repel(data=bay, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Baylor&quot;), color=&quot;green&quot;) + 
-   geom_point(data=loy, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;pink&quot;) + 
-  geom_text_repel(data=loy, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Loyola Chicago&quot;), color=&quot;pink&quot;) +
+   geom_point(data=loy, aes(x=`TurnoversForcedpergame`,y=`Turnoverspergame`), color=&quot;blue&quot;) + 
+  geom_text_repel(data=loy, aes(x=`TurnoversForcedpergame`, y=`Turnoverspergame`, label=&quot;Loyola Chicago&quot;), color=&quot;blue&quot;) +
   geom_text(aes(x=9.5, y=14, label=&quot;Bad TT, Bad TF&quot;)) +
   geom_text(aes(x=9.5, y=12.5, label=&quot;Good TT, Bad TF&quot;)) +
   geom_text(aes(x=18, y=14, label=&quot;Bad TT, Good TF&quot;)) +
@@ -186,10 +186,12 @@ loy &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == 
 <pre class="r"><code>ggplot() + 
   geom_hline(yintercept = 0.7204333) +
   geom_point(data=goodteams, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x)) +    
-  geom_point(data=ill, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;orange&quot;) +
-  geom_point(data=zag, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;red&quot;) + 
-  geom_point(data=bay, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;green&quot;)+ 
-  geom_point(data=loy, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;pink&quot;) +
+  geom_point(data=ill, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;orange&quot;) + geom_text(aes(x=660, y=.69, label=&quot;Illinois&quot;), color=&quot;orange&quot;) +
+  geom_point(data=zag, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;red&quot;) +  geom_text(aes(x=600, y=.75, label=&quot;Gonzaga&quot;), color=&quot;red&quot;) + 
+  geom_point(data=bay, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;green&quot;) +
+  geom_text(aes(x=420, y=.685, label=&quot;Baylor&quot;), color=&quot;green&quot;) +
+  geom_point(data=loy, aes(x=TeamFTA, y=TeamFTPCT, size=OverallW.x), color=&quot;blue&quot;) +
+   geom_text(aes(x=450, y=.74, label=&quot;Loyola Chicago&quot;), color=&quot;blue&quot;) +
   scale_size(range = c(4, 12), name=&quot;Wins&quot;) +
 labs(x=&quot;Team Free Throws Attempted&quot;, y=&quot;Free Throw Percentage&quot;, title=&quot;Apparently top ranked teams don&#39;t always have good free throw shooters&quot;, subtitle=&quot;Illinois ranked towards the bottom in Free Throw Percentage in comparison to other 20 win teams&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() +
@@ -212,7 +214,7 @@ loy &lt;- newstats %&gt;% filter(School == &quot;Loyola (IL)&quot;)</code></pre>
   geom_bar(data=ill, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;orange&quot;) +
   geom_bar(data=zag, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;red&quot;)  +
   geom_bar(data=bay, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;green&quot;)  +
-  geom_bar(data=loy, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;pink&quot;) +
+  geom_bar(data=loy, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;blue&quot;) +
 labs(x=&quot;&quot;, y=&quot;Assist to Turnover Ratio&quot;, title=&quot;Illinois really doesn&#39;t impress on paper in these categories&quot;, subtitle=&quot;The Fighting Illini are behind Gonzaga, Baylor and Loyola in yet another category&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() + 
   theme(
