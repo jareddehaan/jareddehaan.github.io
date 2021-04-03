@@ -215,7 +215,7 @@ loy &lt;- newstats %&gt;% filter(School == &quot;Loyola (IL)&quot;)</code></pre>
   geom_bar(data=zag, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;red&quot;)  +
   geom_bar(data=bay, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;green&quot;)  +
   geom_bar(data=loy, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;blue&quot;) +
-labs(x=&quot;&quot;, y=&quot;Assist to Turnover Ratio&quot;, title=&quot;Illinois really doesn&#39;t impress on paper in Assist to Turnover ratio either&quot;, subtitle=&quot;The Fighting Illini are behind Gonzaga, Baylor and Loyola in yet another category&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+labs(x=&quot;&quot;, y=&quot;Assist to Turnover Ratio&quot;, title=&quot;Illinois doesn&#39;t impress in Assist to Turnover ratio either&quot;, subtitle=&quot;The Fighting Illini are behind Gonzaga, Baylor and Loyola in yet another category&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() + 
   theme(
     plot.title = element_text(size = 12, face = &quot;bold&quot;),
