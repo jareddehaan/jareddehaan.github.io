@@ -99,7 +99,7 @@
 library(ggrepel)</code></pre>
 <p>I loaded my data sets that I will be using to prove that Illinois missed their shot at an NCAA Championship, but was Illinois really that good this year? Illinois was a #1 seed and ranked 2nd in the AP Poll entering the NCAA Tournament.</p>
 <p>Very early on in the Loyola Chicago Round of 32 game, it was very clear Illinois was outmatched, outplayed and would inevitably lose to the Ramblers. As an Illinois fan, I began to cry with about 6 minutes left because I knew we were gonna lose in the year everything seemed to go our way. Pure chaos is what I should have expected during March Madness.</p>
-<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;cbbseason2021.csv&quot;)</code></pre>
+<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;cbbseason2021.csv&quot;) %&gt;% mutate(School = gsub(&quot; NCAA&quot;,&quot;&quot;, School))</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
 ## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
 <pre><code>## 
@@ -114,7 +114,7 @@ library(ggrepel)</code></pre>
 ##   X21 = col_logical()
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
-<pre class="r"><code>oppbballstats &lt;- read_csv(&quot;cbbseasonopp2021.csv&quot;)</code></pre>
+<pre class="r"><code>oppbballstats &lt;- read_csv(&quot;cbbseasonopp2021.csv&quot;) %&gt;% mutate(School = gsub(&quot; NCAA&quot;,&quot;&quot;, School))</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
 ## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
 <pre><code>## 
@@ -138,10 +138,10 @@ oppbballstats &lt;- oppbballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</co
 <pre class="r"><code>turnovers &lt;- collegestats %&gt;%
   mutate(Turnoverspergame = TeamTOV/G.x) %&gt;% mutate(TurnoversForcedpergame = OppTOV/G.x) %&gt;% filter(G.x &gt; 10)</code></pre>
 <p>I created four new data frames of teams I wanted to focus on as well. Gonzaga and Baylor were 1 seeds that were the overall one and two seed in the NCAA Tournament (Illinois was number 3.) Loyola Chicago is the team that eliminated Illinois from March Madness in a 71-58 win.</p>
-<pre class="r"><code>ill &lt;- turnovers %&gt;% filter(School == &quot;Illinois NCAA&quot;)
-zag &lt;- turnovers %&gt;% filter(School == &quot;Gonzaga NCAA&quot;)
-bay &lt;- turnovers %&gt;% filter(School == &quot;Baylor NCAA&quot;)
-loy &lt;- turnovers %&gt;% filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
+<pre class="r"><code>ill &lt;- turnovers %&gt;% filter(School == &quot;Illinois&quot;)
+zag &lt;- turnovers %&gt;% filter(School == &quot;Gonzaga&quot;)
+bay &lt;- turnovers %&gt;% filter(School == &quot;Baylor&quot;)
+loy &lt;- turnovers %&gt;% filter(School == &quot;Loyola (IL)&quot;)</code></pre>
 <p>To find the vline (x intercept) and hline (y intercept), I found the Average Turnovers forced by taking the mean of the TurnoversForcedpergame for all 356 teams. I also found the teams’ Average turnovers per game by taking the mean of the Turnoverspergame for all 356 teams.</p>
 <pre class="r"><code>avgtoforced &lt;- turnovers %&gt;% summarise(
     AvgTOforced = mean(TurnoversForcedpergame))
@@ -178,10 +178,10 @@ If you look at the graph, you’ll see that both 1 seeds seeded ahead of Illinoi
 <p>I mutated all of my dataframes so that the TeamFT% would become TeamFTPCT. This just makes it eaiser on my part to avoid percentage signs.</p>
 <pre class="r"><code>goodteams &lt;- turnovers %&gt;% filter(OverallW.x &gt; 20) %&gt;% mutate(TeamFTPCT = `TeamFT%`) </code></pre>
 <pre class="r"><code>avgfreethrowpct &lt;- goodteams %&gt;% summarise(AVGFreethrowpct = mean(`TeamFT%`))</code></pre>
-<pre class="r"><code>ill &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;% filter(School == &quot;Illinois NCAA&quot;)
-zag &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Gonzaga NCAA&quot;)
-bay &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Baylor NCAA&quot;)
-loy &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
+<pre class="r"><code>ill &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;% filter(School == &quot;Illinois&quot;)
+zag &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Gonzaga&quot;)
+bay &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Baylor&quot;)
+loy &lt;- goodteams %&gt;% mutate(TeamFTPCT = `TeamFT%`) %&gt;%filter(School == &quot;Loyola (IL)&quot;)</code></pre>
 <p>We will now look to see how Illinois compares to the other teams who have won 20 games. I again used Gonzaga, Baylor and Loyola Chicago to see how they compare individually to Illinois.</p>
 <pre class="r"><code>ggplot() + 
   geom_hline(yintercept = 0.7204333) +
@@ -203,16 +203,16 @@ labs(x=&quot;Team Free Throws Attempted&quot;, y=&quot;Free Throw Percentage&quo
 There is a glaring statistic that stands out to me and should to you as well. Out of the 30 teams that won at least 20 games, Illinois shot the most free throws. Did this turn into a good free throw shooting percentage for Illinois? No. No it did not. Even with attempting the most free throws, Illinois was in the bottom 1/4th of free throw shooting percentage among 20 win teams. Baylor was slightly better than Illinois with Gonzaga and Loyola Chicago ahead of Illinois by a few percentage points. Illinois and Baylor are both below average compared to the rest of the 20 win teams this season. Loyola is right on average while Gonzaga is shooting nearly 75%. Free throws don’t make or break a team in a season in general, but close games will be difficult to win when you’ve attempted nearly 700 free throws on the season and have one of the worst free throw shooting percentages.</p>
 <p>Now I’m gonna take a look at assist to turnover ratio for all the good teams. I made a new datframe from the goodteams data frame called newstats so that I could mutate a new column called AstTOratio. I took TeamAST divided by TeamTOV to find the assist to turnover ratio for all 30 good teams. I’ll highlight Illinois to show where they stand as well as Gonzaga, Baylor and Loyola Chicago.</p>
 <pre class="r"><code>newstats &lt;- goodteams %&gt;% mutate(AstTOratio = TeamAST/TeamTOV) %&gt;% filter(OverallW.x &gt; 20) </code></pre>
-<pre class="r"><code>ill &lt;- newstats %&gt;% filter(School == &quot;Illinois NCAA&quot;)
-zag &lt;- newstats %&gt;% filter(School == &quot;Gonzaga NCAA&quot;)
-bay &lt;- newstats %&gt;% filter(School == &quot;Baylor NCAA&quot;)
-loy &lt;- newstats %&gt;% filter(School == &quot;Loyola (IL) NCAA&quot;)</code></pre>
+<pre class="r"><code>ill &lt;- newstats %&gt;% filter(School == &quot;Illinois&quot;)
+zag &lt;- newstats %&gt;% filter(School == &quot;Gonzaga&quot;)
+bay &lt;- newstats %&gt;% filter(School == &quot;Baylor&quot;)
+loy &lt;- newstats %&gt;% filter(School == &quot;Loyola (IL)&quot;)</code></pre>
 <p>We will now look at how Illinois compares to the other 29 teams when it comes to Assist to Turnover Ratio.</p>
 <pre class="r"><code>ggplot() + geom_bar(data=newstats, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`)) +
-  geom_bar(data=ill, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), color = &quot;orange&quot;) +
-  geom_bar(data=zag, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), color = &quot;red&quot;)  +
-  geom_bar(data=bay, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), color = &quot;green&quot;)  +
-  geom_bar(data=loy, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), color = &quot;pink&quot;) +
+  geom_bar(data=ill, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;orange&quot;) +
+  geom_bar(data=zag, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;red&quot;)  +
+  geom_bar(data=bay, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;green&quot;)  +
+  geom_bar(data=loy, aes(x=reorder(School, `AstTOratio`), weight=`AstTOratio`), fill = &quot;pink&quot;) +
 labs(x=&quot;&quot;, y=&quot;Assist to Turnover Ratio&quot;, title=&quot;Illinois really doesn&#39;t impress on paper in these categories&quot;, subtitle=&quot;The Fighting Illini are behind Gonzaga, Baylor and Loyola in yet another category&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() + 
   theme(
