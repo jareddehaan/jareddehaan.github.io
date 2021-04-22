@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Who was the worst college basketball team this season?</h1>
@@ -105,6 +105,7 @@ library(kableExtra)</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     group_rows</code></pre>
+<pre class="r"><code>library(formattable)</code></pre>
 <pre class="r"><code>collegebballstats &lt;- read_csv(&quot;ncaabasketball2021.csv&quot;) %&gt;% mutate(School = gsub(&quot; NCAA&quot;,&quot;&quot;, School))</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
 ## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
@@ -122,15 +123,14 @@ library(kableExtra)</code></pre>
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
 <pre class="r"><code>pointdifferential &lt;- collegebballstats %&gt;%
-  mutate(Teampointspergame = Teampoints./G) %&gt;% mutate(Opponentpointspergame = Opppoints./G) %&gt;% mutate(pointdifferential = Opponentpointspergame - Teampointspergame ) %&gt;%
+  mutate(Teampointspergame = Teampoints./G) %&gt;% mutate(Opponentpointspergame = Opppoints./G) %&gt;% mutate(Pointdifferential = Opponentpointspergame - Teampointspergame ) %&gt;%
   filter(G &gt; 15) %&gt;%
-  arrange(desc(pointdifferential)) %&gt;% 
+  arrange(desc(Pointdifferential)) %&gt;% 
   ungroup() %&gt;%
   top_n(10)</code></pre>
-<pre><code>## Selecting by pointdifferential</code></pre>
+<pre><code>## Selecting by Pointdifferential</code></pre>
 <pre class="r"><code>pointdifferential %&gt;% 
-  select(School, G, OverallW, OverallL, Teampointspergame, Opponentpointspergame, pointdifferential) %&gt;%
-  kable() %&gt;% 
+  select(School, G, OverallW, OverallL, Teampointspergame, Opponentpointspergame, Pointdifferential) %&gt;% kable() %&gt;% 
   kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;condensed&quot;)) %&gt;%
   row_spec(1, bold = T, color = &quot;white&quot;, background = &quot;#046A38&quot;) %&gt;%
   column_spec(1, bold=T)</code></pre>
@@ -156,7 +156,7 @@ Teampointspergame
 Opponentpointspergame
 </th>
 <th style="text-align:right;">
-pointdifferential
+Pointdifferential
 </th>
 </tr>
 </thead>
@@ -393,6 +393,36 @@ Tennessee-Martin
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>badteams &lt;- collegebballstats %&gt;%  
+  group_by(School) %&gt;%
+  filter(OverallW &lt; 10) %&gt;%
+  filter(G &gt; 15) %&gt;%
+  mutate(avgfgpct = mean(`FG%`)) </code></pre>
+<pre class="r"><code>avgfgpct &lt;- badteams %&gt;% summarise(avgfgpct = mean(`FG%`))</code></pre>
+<pre class="r"><code>msvalleystate &lt;- badteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
+idaho &lt;- badteams %&gt;% filter(School == &quot;Idaho&quot;)
+scstate &lt;- badteams %&gt;% filter(School == &quot;South Carolina State&quot;)
+neb &lt;- badteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
+<pre class="r"><code>ggplot(badteams, aes(x=`OverallW`, y=`avgfgpct`)) +
+  geom_hline(yintercept = 0.4229808) +
+geom_point(color=&quot;grey&quot;) + 
+  labs(x=&quot;Wins&quot;, y=&quot;Average Field Goal Pct&quot;, title=&quot;Team turnovers and turnovers forced were not a strong suit for Illinois&quot;, subtitle=&quot;The Fighting Illini struggled to handle the ball and force their opponents to turn the ball over&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 12.5, face = &quot;bold&quot;),
+    axis.title = element_text(size = 9), 
+    plot.subtitle = element_text(size=10), 
+    panel.grid.minor = element_blank()
+    ) +
+  geom_point(data=msvalleystate, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;orange&quot;) + 
+  geom_text_repel(data=msvalleystate, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Mississippi Valley State&quot;), color=&quot;orange&quot;) + 
+  geom_point(data=scstate, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;red&quot;) + 
+  geom_text_repel(data=scstate, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;South Carolina State&quot;), color=&quot;red&quot;) +
+  geom_point(data=idaho, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;green&quot;) + 
+  geom_text_repel(data=idaho, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Idaho&quot;), color=&quot;green&quot;) + 
+   geom_point(data=neb, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;blue&quot;) + 
+  geom_text_repel(data=neb, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Nebraska&quot;), color=&quot;blue&quot;)</code></pre>
+<p><img src="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 
     </div>
   </article>
