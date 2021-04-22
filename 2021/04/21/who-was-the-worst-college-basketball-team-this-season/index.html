@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">Who was the worst college basketball team this season?</h1>
@@ -74,6 +74,8 @@
     <div class="article-content">
       
 <script src="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/header-attrs/header-attrs.js"></script>
+<script src="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/kePrint/kePrint.js"></script>
+<link href="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/lightable/lightable.css" rel="stylesheet" />
 
 
 <p>The constant questions you see are who is the best team in a particular season or who is the best player or players. I want to do a different spin and see who was the worst team(s) during the 2020-2021 NCAA basketball season. This Covid stricken season was very odd and many teams had difficulty playing all their games due to cancellations and postponements. Many teams found it difficult to find any rhythm and it showed for teams on the lower end of their respective conference standings.</p>
@@ -96,7 +98,13 @@
 ##   grobX.absoluteGrob      ggplot2
 ##   grobY.absoluteGrob      ggplot2</code></pre>
 <pre class="r"><code>library(ggbeeswarm)
-library(ggrepel)</code></pre>
+library(ggrepel)
+library(kableExtra)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
 <pre class="r"><code>collegebballstats &lt;- read_csv(&quot;ncaabasketball2021.csv&quot;) %&gt;% mutate(School = gsub(&quot; NCAA&quot;,&quot;&quot;, School))</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
 ## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
@@ -113,6 +121,278 @@ library(ggrepel)</code></pre>
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
+<pre class="r"><code>pointdifferential &lt;- collegebballstats %&gt;%
+  mutate(Teampointspergame = Teampoints./G) %&gt;% mutate(Opponentpointspergame = Opppoints./G) %&gt;% mutate(pointdifferential = Opponentpointspergame - Teampointspergame ) %&gt;%
+  filter(G &gt; 15) %&gt;%
+  arrange(desc(pointdifferential)) %&gt;% 
+  ungroup() %&gt;%
+  top_n(10)</code></pre>
+<pre><code>## Selecting by pointdifferential</code></pre>
+<pre class="r"><code>pointdifferential %&gt;% 
+  select(School, G, OverallW, OverallL, Teampointspergame, Opponentpointspergame, pointdifferential) %&gt;%
+  kable() %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;condensed&quot;)) %&gt;%
+  row_spec(1, bold = T, color = &quot;white&quot;, background = &quot;#046A38&quot;) %&gt;%
+  column_spec(1, bold=T)</code></pre>
+<table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+School
+</th>
+<th style="text-align:right;">
+G
+</th>
+<th style="text-align:right;">
+OverallW
+</th>
+<th style="text-align:right;">
+OverallL
+</th>
+<th style="text-align:right;">
+Teampointspergame
+</th>
+<th style="text-align:right;">
+Opponentpointspergame
+</th>
+<th style="text-align:right;">
+pointdifferential
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #046A38 !important;font-weight: bold;">
+Mississippi Valley State
+</td>
+<td style="text-align:right;font-weight: bold;color: white !important;background-color: #046A38 !important;">
+24
+</td>
+<td style="text-align:right;font-weight: bold;color: white !important;background-color: #046A38 !important;">
+2
+</td>
+<td style="text-align:right;font-weight: bold;color: white !important;background-color: #046A38 !important;">
+22
+</td>
+<td style="text-align:right;font-weight: bold;color: white !important;background-color: #046A38 !important;">
+56.83333
+</td>
+<td style="text-align:right;font-weight: bold;color: white !important;background-color: #046A38 !important;">
+87.37500
+</td>
+<td style="text-align:right;font-weight: bold;color: white !important;background-color: #046A38 !important;">
+30.54167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+South Carolina State
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+61.22222
+</td>
+<td style="text-align:right;">
+78.55556
+</td>
+<td style="text-align:right;">
+17.33333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+San Jose State
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+65.76190
+</td>
+<td style="text-align:right;">
+81.33333
+</td>
+<td style="text-align:right;">
+15.57143
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Idaho
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+61.04545
+</td>
+<td style="text-align:right;">
+76.45455
+</td>
+<td style="text-align:right;">
+15.40909
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Northern Illinois
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+62.31579
+</td>
+<td style="text-align:right;">
+77.42105
+</td>
+<td style="text-align:right;">
+15.10526
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Delaware State
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+70.78947
+</td>
+<td style="text-align:right;">
+85.73684
+</td>
+<td style="text-align:right;">
+14.94737
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Arkansas-Pine Bluff
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+61.96000
+</td>
+<td style="text-align:right;">
+76.84000
+</td>
+<td style="text-align:right;">
+14.88000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Portland
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+69.47619
+</td>
+<td style="text-align:right;">
+83.23810
+</td>
+<td style="text-align:right;">
+13.76190
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Air Force
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+58.72000
+</td>
+<td style="text-align:right;">
+71.92000
+</td>
+<td style="text-align:right;">
+13.20000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Tennessee-Martin
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+65.45833
+</td>
+<td style="text-align:right;">
+76.95833
+</td>
+<td style="text-align:right;">
+11.50000
+</td>
+</tr>
+</tbody>
+</table>
 
     </div>
   </article>
