@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Who was the worst college basketball team this season? - Jared DeHaan&#39;s Github Site</title>
+<meta property="og:title" content="Who was the worst college basketball team this season? - Jared DeHaan&#39;s Github Site">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/jareddehaan">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/jared_dehaan14">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Who was the worst college basketball team this season?</h1>
+
+    
+    <span class="article-date">2021-04-21</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>The constant questions you see are who is the best team in a particular season or who is the best player or players. I want to do a different spin and see who was the worst team(s) during the 2020-2021 NCAA basketball season. This Covid stricken season was very odd and many teams had difficulty playing all their games due to cancellations and postponements. Many teams found it difficult to find any rhythm and it showed for teams on the lower end of their respective conference standings.</p>
+<p>A team will have to have played at least 15 games to be eligible for being the worst team in the 2020-2021 season. I’m looking at you Chicago State… Chicago State ended their season after a 0-9 start. They said it was for the players’ “health, safety, and academic pursuits.” Through 9 games they were being outscored by 33 points a game. Sadly I won’t be able to choose the Cougars as the worst team, but let’s see if there are other teams that stand out among the worst.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.5     ✓ dplyr   1.0.3
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggalt)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
+##   method                  from   
+##   grid.draw.absoluteGrob  ggplot2
+##   grobHeight.absoluteGrob ggplot2
+##   grobWidth.absoluteGrob  ggplot2
+##   grobX.absoluteGrob      ggplot2
+##   grobY.absoluteGrob      ggplot2</code></pre>
+<pre class="r"><code>library(ggbeeswarm)
+library(ggrepel)</code></pre>
+<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;ncaabasketball2021.csv&quot;) %&gt;% mutate(School = gsub(&quot; NCAA&quot;,&quot;&quot;, School))</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
+## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   School = col_character(),
+##   X9 = col_logical(),
+##   X12 = col_logical(),
+##   X15 = col_logical(),
+##   X18 = col_logical(),
+##   X21 = col_logical()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
