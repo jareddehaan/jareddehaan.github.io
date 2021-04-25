@@ -425,6 +425,23 @@ geom_point(color=&quot;grey&quot;) +
 <pre class="r"><code>badftshootingteams &lt;- collegebballstats %&gt;%  
   group_by(School) %&gt;%
   filter(OverallW &lt; 10, G &gt; 15, `FT%` &lt; .65) </code></pre>
+<pre class="r"><code>msvalleystateft &lt;- badftshootingteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
+scstateft &lt;- badftshootingteams %&gt;% filter(School == &quot;South Carolina State&quot;)
+nebft &lt;- badftshootingteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
+<pre class="r"><code>ggplot() + geom_bar(data=badftshootingteams, aes(x=reorder(School, `FT%`), weight=`FT%`)) +
+  geom_bar(data=msvalleystateft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#046A38&quot;) +
+  geom_bar(data=scstateft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#841A2B&quot;)  +
+  geom_bar(data=nebft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#E41C38&quot;)  +
+labs(x=&quot;&quot;, y=&quot;Free Throw Percentage&quot;, title=&quot;Illinois doesn&#39;t impress in Assist to Turnover ratio either&quot;, subtitle=&quot;The Fighting Illini are behind Gonzaga, Baylor and Loyola in yet another category&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=9), 
+    panel.grid.minor = element_blank()
+    ) +
+  coord_flip()</code></pre>
+<p><img src="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 
     </div>
   </article>
