@@ -395,8 +395,7 @@ Tennessee-Martin
 </table>
 <pre class="r"><code>badteams &lt;- collegebballstats %&gt;%  
   group_by(School) %&gt;%
-  filter(OverallW &lt; 10) %&gt;%
-  filter(G &gt; 15) %&gt;%
+  filter(OverallW &lt; 10, G &gt; 15) %&gt;%
   mutate(avgfgpct = mean(`FG%`)) </code></pre>
 <pre class="r"><code>avgfgpct &lt;- badteams %&gt;% summarise(avgfgpct = mean(`FG%`))</code></pre>
 <pre class="r"><code>msvalleystate &lt;- badteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
@@ -406,10 +405,10 @@ neb &lt;- badteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
 <pre class="r"><code>ggplot(badteams, aes(x=`OverallW`, y=`avgfgpct`)) +
   geom_hline(yintercept = 0.4229808) +
 geom_point(color=&quot;grey&quot;) + 
-  labs(x=&quot;Wins&quot;, y=&quot;Average Field Goal Pct&quot;, title=&quot;Mississippi Valley State was BAD at basketball during the 2020-2021 season&quot;, subtitle=&quot;The Delta Devils were colder than a Dairy Queen blizzard this season&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  labs(x=&quot;Wins&quot;, y=&quot;Average Field Goal Pct&quot;, title=&quot;Mississippi Valley State was BAD at shooting the basketball during the 2020-2021 season&quot;, subtitle=&quot;The Delta Devils were colder than a Dairy Queen blizzard this season&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
   theme_minimal() + 
   theme(
-    plot.title = element_text(size = 12.5, face = &quot;bold&quot;),
+    plot.title = element_text(size = 12.6, face = &quot;bold&quot;),
     axis.title = element_text(size = 9), 
     plot.subtitle = element_text(size=10), 
     panel.grid.minor = element_blank()
@@ -418,11 +417,14 @@ geom_point(color=&quot;grey&quot;) +
   geom_text_repel(data=msvalleystate, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Mississippi Valley State&quot;), color=&quot;#046A38&quot;) + 
   geom_point(data=scstate, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;#841A2B&quot;) + 
   geom_text_repel(data=scstate, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;South Carolina State&quot;), color=&quot;#841A2B&quot;) +
-  geom_point(data=idaho, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;#808080&quot;) + 
-  geom_text_repel(data=idaho, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Idaho&quot;), color=&quot;#808080&quot;) + 
+  geom_point(data=idaho, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;#B3A369&quot;) + 
+  geom_text_repel(data=idaho, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Idaho&quot;), color=&quot;#B3A369&quot;) + 
    geom_point(data=neb, aes(x=`OverallW`, y=`avgfgpct`), color=&quot;#E41C38&quot;) + 
   geom_text_repel(data=neb, aes(x=`OverallW`, y=`avgfgpct`, label=&quot;Nebraska&quot;), color=&quot;#E41C38&quot;)</code></pre>
 <p><img src="/2021/04/21/who-was-the-worst-college-basketball-team-this-season/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>badftshootingteams &lt;- collegebballstats %&gt;%  
+  group_by(School) %&gt;%
+  filter(OverallW &lt; 10, G &gt; 15, `FT%` &lt; .65) </code></pre>
 
     </div>
   </article>
