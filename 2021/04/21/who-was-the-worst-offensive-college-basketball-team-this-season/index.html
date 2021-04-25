@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Who was the worst offensive college basketball team this season? - Jared DeHaan&#39;s Github Site</title>
+<meta property="og:title" content="Who was the worst offensive college basketball team this season? - Jared DeHaan&#39;s Github Site">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/jareddehaan">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/jared_dehaan14">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">12 min read</span>
+    
+
+    <h1 class="article-title">Who was the worst offensive college basketball team this season?</h1>
+
+    
+    <span class="article-date">2021-04-21</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/04/21/who-was-the-worst-offensive-college-basketball-team-this-season/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>The constant questions you see are who is the best team in a particular season or who is the best player or players. I want to do a different spin and see who was the worst team(s) during the 2020-2021 NCAA basketball season. This Covid stricken season was very odd and many teams had difficulty playing all their games due to cancellations and postponements. Many teams found it difficult to find any rhythm and it showed for teams on the lower end of their respective conference standings.</p>
+<p>A team will have to have played at least 15 games to be eligible for being the worst team in the 2020-2021 season. I’m looking at you Chicago State… Chicago State ended their season after a 0-9 start. They said it was for the players’ “health, safety, and academic pursuits.” Through 9 games they were being outscored by 33 points a game. Sadly I won’t be able to choose the Cougars as the worst team, but let’s see if there are other teams that stand out among the worst.</p>
+<p>I first loaded in various libraries I might need for this project. Easier and cleaner to do all of them at the beginning.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.5     ✓ dplyr   1.0.3
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggalt)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
+##   method                  from   
+##   grid.draw.absoluteGrob  ggplot2
+##   grobHeight.absoluteGrob ggplot2
+##   grobWidth.absoluteGrob  ggplot2
+##   grobX.absoluteGrob      ggplot2
+##   grobY.absoluteGrob      ggplot2</code></pre>
+<pre class="r"><code>library(ggbeeswarm)
+library(ggrepel)
+library(kableExtra)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
+<pre class="r"><code>library(formattable)
+library(gt)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;gt&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:formattable&#39;:
+## 
+##     currency</code></pre>
+<pre class="r"><code>library(htmltools)</code></pre>
+<p>I used Sports reference to get my dataset that I used for this project. “NCAA” showed up next to teams that made the 2021 NCAA Tournament, so I used gsub to remove NCAA from all schools to make it cleaner.</p>
+<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;ncaabasketball2021.csv&quot;) %&gt;% mutate(School = gsub(&quot;NCAA&quot;,&quot;&quot;, School))</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
+## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   School = col_character(),
+##   X9 = col_logical(),
+##   X12 = col_logical(),
+##   X15 = col_logical(),
+##   X18 = col_logical(),
+##   X21 = col_logical()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<p>There were five extra columns I didn’t need to have. I used select to remove these from my dataframe.</p>
+<pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
+<p>I first wanted to take a look at who had the worst point differential in the 2020-2021 season. To find the point differential, I first mutated Teampointspergame to equal the Teampoints./G. This means I took all the points a team scored this season and divided it by the number of games they played. I then took Opponentpointspergame and mutated it to equal the Opppoints./G. This means I took all of the points a team gave up to their opponents this season and took it divided by the number of games they played. Finally to find the point differential per game, I took the Opponentpointspergame minus the Teampointspergame. I filtered out all teams that had yet to play 15 games this season. I arranged in descending order as well selected just the top 10 worst point differentials.</p>
+<pre class="r"><code>pointdifferential &lt;- collegebballstats %&gt;%
+  mutate(Teampointspergame = Teampoints./G) %&gt;% mutate(Opponentpointspergame = Opppoints./G) %&gt;% mutate(Pointdifferential = Opponentpointspergame - Teampointspergame ) %&gt;%
+  filter(G &gt; 15) %&gt;%
+  arrange(desc(Pointdifferential)) %&gt;% 
+  ungroup() %&gt;%
+  top_n(10)</code></pre>
+<pre><code>## Selecting by Pointdifferential</code></pre>
+<p>Let’s take a look at the table to see who had the worst point differentials this college basketball season.</p>
+<pre class="r"><code>pointdifferential %&gt;% select(School, OverallW, OverallL, Teampointspergame, Opponentpointspergame, Pointdifferential) %&gt;%
+  gt() %&gt;% 
+  cols_label(
+    OverallW = &quot;Wins&quot;,
+    OverallL = &quot;Losses&quot;,
+    Pointdifferential = &quot;Point Differential&quot;,
+    Teampointspergame = &quot;TeamPPG&quot;,
+    Opponentpointspergame = &quot;OppPPG&quot;
+  ) %&gt;%
+  tab_header(
+    title = &quot;Mississippi Valley State had little going for them this season&quot;,
+    subtitle = &quot;I bet everyone wished they scheduled the Delta Devils.&quot;
+  ) %&gt;% tab_style(
+    style = cell_text(color = &quot;green&quot;, weight = &quot;bold&quot;, align = &quot;left&quot;),
+    locations = cells_title(&quot;title&quot;)
+  ) %&gt;% tab_style(
+    style = cell_text(color = &quot;red&quot;, align = &quot;left&quot;),
+    locations = cells_title(&quot;subtitle&quot;)
+  ) %&gt;%
+  tab_source_note(
+    source_note = &quot;By Jared DeHaan&quot;
+  ) %&gt;%
+  tab_source_note(
+    source_note = md(&quot;Source: [Sports Reference](https://www.sports-reference.com/cbb/seasons/2021-school-stats.html)&quot;)
+  ) %&gt;%
+  tab_style(
+    style = list(
+      cell_fill(color = &quot;#046A38&quot;),
+      cell_text(color = &quot;white&quot;)
+      ),
+    locations = cells_body(
+      rows = School == &quot;Mississippi Valley State&quot;)
+  )</code></pre>
+<pre><code>## Warning: The `.dots` argument of `group_by()` is deprecated as of dplyr 1.0.0.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#tgaonzctwm .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tgaonzctwm .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tgaonzctwm .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tgaonzctwm .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tgaonzctwm .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tgaonzctwm .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tgaonzctwm .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tgaonzctwm .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tgaonzctwm .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tgaonzctwm .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tgaonzctwm .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tgaonzctwm .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tgaonzctwm .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#tgaonzctwm .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tgaonzctwm .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tgaonzctwm .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tgaonzctwm .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#tgaonzctwm .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tgaonzctwm .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#tgaonzctwm .gt_left {
+  text-align: left;
+}
+
+#tgaonzctwm .gt_center {
+  text-align: center;
+}
+
+#tgaonzctwm .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tgaonzctwm .gt_font_normal {
+  font-weight: normal;
+}
+
+#tgaonzctwm .gt_font_bold {
+  font-weight: bold;
+}
+
+#tgaonzctwm .gt_font_italic {
+  font-style: italic;
+}
+
+#tgaonzctwm .gt_super {
+  font-size: 65%;
+}
+
+#tgaonzctwm .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="tgaonzctwm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal" style="color: green; text-align: left; font-weight: bold;">Mississippi Valley State had little going for them this season</th>
+    </tr>
+    <tr>
+      <th colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="color: red; text-align: left;">I bet everyone wished they scheduled the Delta Devils.</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">School</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Wins</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Losses</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">TeamPPG</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">OppPPG</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Point Differential</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left" style="background-color: #046A38; color: white;">Mississippi Valley State</td>
+      <td class="gt_row gt_right" style="background-color: #046A38; color: white;">2</td>
+      <td class="gt_row gt_right" style="background-color: #046A38; color: white;">22</td>
+      <td class="gt_row gt_right" style="background-color: #046A38; color: white;">56.83333</td>
+      <td class="gt_row gt_right" style="background-color: #046A38; color: white;">87.37500</td>
+      <td class="gt_row gt_right" style="background-color: #046A38; color: white;">30.54167</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">South Carolina State</td>
+      <td class="gt_row gt_right">1</td>
+      <td class="gt_row gt_right">17</td>
+      <td class="gt_row gt_right">61.22222</td>
+      <td class="gt_row gt_right">78.55556</td>
+      <td class="gt_row gt_right">17.33333</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">San Jose State</td>
+      <td class="gt_row gt_right">5</td>
+      <td class="gt_row gt_right">16</td>
+      <td class="gt_row gt_right">65.76190</td>
+      <td class="gt_row gt_right">81.33333</td>
+      <td class="gt_row gt_right">15.57143</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Idaho</td>
+      <td class="gt_row gt_right">1</td>
+      <td class="gt_row gt_right">21</td>
+      <td class="gt_row gt_right">61.04545</td>
+      <td class="gt_row gt_right">76.45455</td>
+      <td class="gt_row gt_right">15.40909</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Northern Illinois</td>
+      <td class="gt_row gt_right">3</td>
+      <td class="gt_row gt_right">16</td>
+      <td class="gt_row gt_right">62.31579</td>
+      <td class="gt_row gt_right">77.42105</td>
+      <td class="gt_row gt_right">15.10526</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Delaware State</td>
+      <td class="gt_row gt_right">3</td>
+      <td class="gt_row gt_right">16</td>
+      <td class="gt_row gt_right">70.78947</td>
+      <td class="gt_row gt_right">85.73684</td>
+      <td class="gt_row gt_right">14.94737</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Arkansas-Pine Bluff</td>
+      <td class="gt_row gt_right">4</td>
+      <td class="gt_row gt_right">21</td>
+      <td class="gt_row gt_right">61.96000</td>
+      <td class="gt_row gt_right">76.84000</td>
+      <td class="gt_row gt_right">14.88000</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Portland</td>
+      <td class="gt_row gt_right">6</td>
+      <td class="gt_row gt_right">15</td>
+      <td class="gt_row gt_right">69.47619</td>
+      <td class="gt_row gt_right">83.23810</td>
+      <td class="gt_row gt_right">13.76190</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Air Force</td>
+      <td class="gt_row gt_right">5</td>
+      <td class="gt_row gt_right">20</td>
+      <td class="gt_row gt_right">58.72000</td>
+      <td class="gt_row gt_right">71.92000</td>
+      <td class="gt_row gt_right">13.20000</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Tennessee-Martin</td>
+      <td class="gt_row gt_right">8</td>
+      <td class="gt_row gt_right">16</td>
+      <td class="gt_row gt_right">65.45833</td>
+      <td class="gt_row gt_right">76.95833</td>
+      <td class="gt_row gt_right">11.50000</td>
+    </tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="6">By Jared DeHaan</td>
+    </tr>
+    <tr>
+      <td class="gt_sourcenote" colspan="6">Source: <a href="https://www.sports-reference.com/cbb/seasons/2021-school-stats.html">Sports Reference</a></td>
+    </tr>
+  </tfoot>
+  
+</table></div>
+<p>There were many teams who had very drastic point differentials this past season, but Mississippi Valley State is one that jumps right out at you. The Delta Devils were outscored by an average of 30.5 points per game. That is over 13 points more than the next team on this top (more like bottom) 10 list. South Carolina State is the next closest, losing by about 17 points a game. San Jose State, Idaho and Northern Illinois round out the top 5 losing by an average of approximately 15 a game.</p>
+<p>So it’s clear to see Mississippi Valley State did not excel in point differential, let’s see if their field goal percentage reflects this as well.</p>
+<p>The new dataframe is for bad teams so only teams with less than 10 wins are included and they must play at least 15 games.</p>
+<pre class="r"><code>badteams &lt;- collegebballstats %&gt;% 
+  filter(OverallW &lt; 10, G &gt; 15)</code></pre>
+<p>I found the average team field goal percentage for “bad teams” was 42.29808%.</p>
+<pre class="r"><code>avgfgpct &lt;- badteams %&gt;%
+  summarise(Averagefgpct = mean(`FG%`))</code></pre>
+<p>I made dataframes for 3 teams that won the least amount games from the previous table as well as Nebraska to see where they compare to the rest of the teams.</p>
+<pre class="r"><code>msvalleystate &lt;- badteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
+idaho &lt;- badteams %&gt;% filter(School == &quot;Idaho&quot;)
+scstate &lt;- badteams %&gt;% filter(School == &quot;South Carolina State&quot;)
+neb &lt;- badteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
+<p>Let’s take a look and see how these four teams compare to the rest of the teams with less than 10 wins during the 2020-21 season.</p>
+<pre class="r"><code>ggplot(badteams, aes(x=`OverallW`, y=`FG%`)) +
+  geom_hline(yintercept = 0.4229808) +
+geom_point(color=&quot;grey&quot;) + 
+  labs(x=&quot;Wins&quot;, y=&quot;Average Field Goal Pct&quot;, title=&quot;Mississippi Valley State was BAD at shooting the basketball during the 2020-2021 season&quot;, subtitle=&quot;The Delta Devils were colder than a Dairy Queen blizzard this season&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 12.6, face = &quot;bold&quot;),
+    axis.title = element_text(size = 9), 
+    plot.subtitle = element_text(size=10), 
+    panel.grid.minor = element_blank()
+    ) +
+  geom_point(data=msvalleystate, aes(x=`OverallW`, y=`FG%`), color=&quot;#046A38&quot;) + 
+  geom_text_repel(data=msvalleystate, aes(x=`OverallW`, y=`FG%`, label=&quot;Mississippi Valley State&quot;), color=&quot;#046A38&quot;) + 
+  geom_point(data=scstate, aes(x=`OverallW`, y=`FG%`), color=&quot;#841A2B&quot;) + 
+  geom_text_repel(data=scstate, aes(x=`OverallW`, y=`FG%`, label=&quot;South Carolina State&quot;), color=&quot;#841A2B&quot;) +
+  geom_point(data=idaho, aes(x=`OverallW`, y=`FG%`), color=&quot;#B3A369&quot;) + 
+  geom_text_repel(data=idaho, aes(x=`OverallW`, y=`FG%`, label=&quot;Idaho&quot;), color=&quot;#B3A369&quot;) + 
+   geom_point(data=neb, aes(x=`OverallW`, y=`FG%`), color=&quot;#E41C38&quot;) + 
+  geom_text_repel(data=neb, aes(x=`OverallW`, y=`FG%`, label=&quot;Nebraska&quot;), color=&quot;#E41C38&quot;)</code></pre>
+<p><img src="/2021/04/21/who-was-the-worst-offensive-college-basketball-team-this-season/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+First off, my eye goes straight to the top right where I see a team who had 8 wins and shot over 50%. It turns out that was UTEP and they shot over 50% from the field but committed 17 turnovers a game and only grabbed 31 rebounds. That will cause you to lose a game no matter how good you shoot the ball. I also notice how terrible Mississippi Valley State’s field goal percentage is. It’s sitting at an ice cold 35.6% per game. No wonder you lose by 30 a game when you shoot that poorly. Idaho surprisingly shot better than average on this list even though they only won 1 game on the year. South Carolina was quite a bit better than MVSU shooting 39%. Nebraska shot just below average which is what I expected after watching most games this season. So far, it’s pretty easy to see who the worst team has been.</p>
+<p>Now let’s take a look at Free throw shooting.</p>
+<p>In this dataframe I excluded everyone who shot better than 65% from the free throw line to only get the worst teams. I again made sure these teams won less than 10 games and played more than 15 games.</p>
+<pre class="r"><code>badftshootingteams &lt;- collegebballstats %&gt;%  
+  group_by(School) %&gt;%
+  filter(OverallW &lt; 10, G &gt; 15, `FT%` &lt; .65) </code></pre>
+<p>I made three dataframes for the two teams that had been previously stated in both graphs. I also added Nebraska in after seeing that they were in this “elite” company.</p>
+<pre class="r"><code>msvalleystateft &lt;- badftshootingteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
+scstateft &lt;- badftshootingteams %&gt;% filter(School == &quot;South Carolina State&quot;)
+nebft &lt;- badftshootingteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
+<p>Let’s look at the worst free throw shooting teams in NCAA basketball this past season.</p>
+<pre class="r"><code>ggplot() + geom_bar(data=badftshootingteams, aes(x=reorder(School, `FT%`), weight=`FT%`)) +
+  geom_bar(data=msvalleystateft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#046A38&quot;) +
+  geom_bar(data=scstateft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#841A2B&quot;)  +
+  geom_bar(data=nebft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#E41C38&quot;)  +
+labs(x=&quot;&quot;, y=&quot;Free Throw Percentage&quot;, title=&quot;Mississippi Valley State might need to reconsider their basketball program&quot;, subtitle=&quot;Delta Devils at the bottom again and Nebraska is the lone Power Five team&quot;, caption=&quot;Source: Sports Reference | By Jared DeHaan&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 11.5, face = &quot;bold&quot;, color = &quot;red&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=9), 
+    panel.grid.minor = element_blank()
+    ) +
+  coord_flip()</code></pre>
+<p><img src="/2021/04/21/who-was-the-worst-offensive-college-basketball-team-this-season/index_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+To no one’s surprise, Mississippi Valley State lands the coveted last position on yet another graph. I had low expectations but 57% was worse than I expected. Sadly, Nebraska landed on this list, shooting at about 64% on the year with South Carolina State coming in at about 62% from the charity stripe. Besides New Mexico at 59.9%, no one else was below 60% from the free throw line besides Mississippi Valley State.</p>
+<p>If there is one thing for certain this Coronavirus stricken college basketball season, it’s that Mississippi Valley State was truly the worst offensive team I have ever seen. The only two teams they beat were Alabama State (can be found on the free throw list) and Grambling State. They won those games by a combined SEVEN points.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
