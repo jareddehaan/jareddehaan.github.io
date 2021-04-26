@@ -76,7 +76,7 @@
 <script src="/2021/04/21/who-was-the-worst-offensive-college-basketball-team-this-season/index_files/header-attrs/header-attrs.js"></script>
 
 
-<p>The constant questions you see are who is the best team in a particular season or who is the best player or players. I want to do a different spin and see who was the worst team(s) during the 2020-2021 NCAA basketball season on the offensive side of the ball. This Covid stricken season has been very odd and many teams had difficulty playing all their games due to cancellations and postponements. Many teams found it difficult to find any rhythm and it showed for teams on the lower end of their respective conference standings.</p>
+<p>The constant questions you see are who is the best team in a particular season or who is the best player or players. I want to do a different spin and see who is the worst team(s) in the 2020-2021 NCAA basketball season on the offensive side of the ball. This Covid stricken season has been very odd and many teams had difficulty playing all their games due to cancellations and postponements. Many teams found it difficult to find any rhythm and it showed for teams on the lower end of their respective conference standings.</p>
 <p>A team will have to have played at least 15 games to be eligible for being the worst team in the 2020-2021 season. I’m looking at you Chicago State… Chicago State ended their season after a 0-9 start. They said it was for the players’ “health, safety, and academic pursuits.” Through 9 games they were being outscored by 33 points a game. Sadly I won’t be able to choose the Cougars as the worst team, but let’s see if there are other teams that stand out among the worst.</p>
 <p>I first loaded in various libraries I might need for this project. Easier and cleaner to do all of them at the beginning.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
@@ -179,7 +179,7 @@ library(gt)</code></pre>
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#zgbatlmnzh .gt_table {
+#kxvkikhcsc .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -204,7 +204,7 @@ library(gt)</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_heading {
+#kxvkikhcsc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -216,7 +216,7 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_title {
+#kxvkikhcsc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -226,7 +226,7 @@ library(gt)</code></pre>
   border-bottom-width: 0;
 }
 
-#zgbatlmnzh .gt_subtitle {
+#kxvkikhcsc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -236,13 +236,13 @@ library(gt)</code></pre>
   border-top-width: 0;
 }
 
-#zgbatlmnzh .gt_bottom_border {
+#kxvkikhcsc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_col_headings {
+#kxvkikhcsc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -257,7 +257,7 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_col_heading {
+#kxvkikhcsc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -277,7 +277,7 @@ library(gt)</code></pre>
   overflow-x: hidden;
 }
 
-#zgbatlmnzh .gt_column_spanner_outer {
+#kxvkikhcsc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -289,15 +289,15 @@ library(gt)</code></pre>
   padding-right: 4px;
 }
 
-#zgbatlmnzh .gt_column_spanner_outer:first-child {
+#kxvkikhcsc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zgbatlmnzh .gt_column_spanner_outer:last-child {
+#kxvkikhcsc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zgbatlmnzh .gt_column_spanner {
+#kxvkikhcsc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -309,7 +309,7 @@ library(gt)</code></pre>
   width: 100%;
 }
 
-#zgbatlmnzh .gt_group_heading {
+#kxvkikhcsc .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -331,7 +331,7 @@ library(gt)</code></pre>
   vertical-align: middle;
 }
 
-#zgbatlmnzh .gt_empty_group_heading {
+#kxvkikhcsc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -346,15 +346,15 @@ library(gt)</code></pre>
   vertical-align: middle;
 }
 
-#zgbatlmnzh .gt_from_md > :first-child {
+#kxvkikhcsc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zgbatlmnzh .gt_from_md > :last-child {
+#kxvkikhcsc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zgbatlmnzh .gt_row {
+#kxvkikhcsc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -373,7 +373,7 @@ library(gt)</code></pre>
   overflow-x: hidden;
 }
 
-#zgbatlmnzh .gt_stub {
+#kxvkikhcsc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -385,7 +385,7 @@ library(gt)</code></pre>
   padding-left: 12px;
 }
 
-#zgbatlmnzh .gt_summary_row {
+#kxvkikhcsc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -395,7 +395,7 @@ library(gt)</code></pre>
   padding-right: 5px;
 }
 
-#zgbatlmnzh .gt_first_summary_row {
+#kxvkikhcsc .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -405,7 +405,7 @@ library(gt)</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_grand_summary_row {
+#kxvkikhcsc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -415,7 +415,7 @@ library(gt)</code></pre>
   padding-right: 5px;
 }
 
-#zgbatlmnzh .gt_first_grand_summary_row {
+#kxvkikhcsc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -425,11 +425,11 @@ library(gt)</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_striped {
+#kxvkikhcsc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zgbatlmnzh .gt_table_body {
+#kxvkikhcsc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -438,7 +438,7 @@ library(gt)</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_footnotes {
+#kxvkikhcsc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -452,13 +452,13 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_footnote {
+#kxvkikhcsc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#zgbatlmnzh .gt_sourcenotes {
+#kxvkikhcsc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -472,46 +472,46 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zgbatlmnzh .gt_sourcenote {
+#kxvkikhcsc .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#zgbatlmnzh .gt_left {
+#kxvkikhcsc .gt_left {
   text-align: left;
 }
 
-#zgbatlmnzh .gt_center {
+#kxvkikhcsc .gt_center {
   text-align: center;
 }
 
-#zgbatlmnzh .gt_right {
+#kxvkikhcsc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zgbatlmnzh .gt_font_normal {
+#kxvkikhcsc .gt_font_normal {
   font-weight: normal;
 }
 
-#zgbatlmnzh .gt_font_bold {
+#kxvkikhcsc .gt_font_bold {
   font-weight: bold;
 }
 
-#zgbatlmnzh .gt_font_italic {
+#kxvkikhcsc .gt_font_italic {
   font-style: italic;
 }
 
-#zgbatlmnzh .gt_super {
+#kxvkikhcsc .gt_super {
   font-size: 65%;
 }
 
-#zgbatlmnzh .gt_footnote_marks {
+#kxvkikhcsc .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="zgbatlmnzh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="kxvkikhcsc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="6" class="gt_heading gt_title gt_font_normal" style="color: green; text-align: left; font-weight: bold;">Mississippi Valley State had little going for them this season</th>
