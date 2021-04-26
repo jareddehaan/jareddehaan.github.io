@@ -113,7 +113,8 @@ library(gt)</code></pre>
 ##     currency</code></pre>
 <pre class="r"><code>library(htmltools)</code></pre>
 <p>I used Sports reference to get my dataset that I used for this project. “NCAA” showed up next to teams that made the 2021 NCAA Tournament, so I used gsub to remove NCAA from all schools to make it cleaner.</p>
-<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;ncaabasketball2021.csv&quot;) %&gt;% mutate(School = gsub(&quot;NCAA&quot;,&quot;&quot;, School))</code></pre>
+<pre class="r"><code>collegebballstats &lt;- read_csv(&quot;ncaabasketball2021.csv&quot;) %&gt;% 
+  mutate(School = gsub(&quot;NCAA&quot;,&quot;&quot;, School))</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X9&#39; [9], &#39;X12&#39; [12], &#39;X15&#39; [15],
 ## &#39;X18&#39; [18], &#39;X21&#39; [21]</code></pre>
 <pre><code>## 
@@ -129,17 +130,21 @@ library(gt)</code></pre>
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <p>There were five extra columns I didn’t need to have. I used select to remove these from my dataframe.</p>
-<pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% select(-X9, -X12, -X15, -X18, -X21)</code></pre>
+<pre class="r"><code>collegebballstats &lt;- collegebballstats %&gt;% 
+  select(-X9, -X12, -X15, -X18, -X21)</code></pre>
 <p>I first wanted to take a look at who had the worst point differential in the 2020-2021 season. To find the point differential, I first mutated Teampointspergame to equal the Teampoints./G. This means I took all the points a team scored this season and divided it by the number of games they played. I then took Opponentpointspergame and mutated it to equal the Opppoints./G. This means I took all of the points a team gave up to their opponents this season and took it divided by the number of games they played. Finally to find the point differential per game, I took the Opponentpointspergame minus the Teampointspergame. I filtered out all teams that had yet to play 15 games this season. I arranged in descending order as well selected just the top 10 worst point differentials.</p>
 <pre class="r"><code>pointdifferential &lt;- collegebballstats %&gt;%
-  mutate(Teampointspergame = Teampoints./G) %&gt;% mutate(Opponentpointspergame = Opppoints./G) %&gt;% mutate(Pointdifferential = Opponentpointspergame - Teampointspergame ) %&gt;%
+  mutate(Teampointspergame = Teampoints./G) %&gt;% 
+  mutate(Opponentpointspergame = Opppoints./G) %&gt;% 
+  mutate(Pointdifferential = Opponentpointspergame - Teampointspergame ) %&gt;%
   filter(G &gt; 15) %&gt;%
   arrange(desc(Pointdifferential)) %&gt;% 
   ungroup() %&gt;%
   top_n(10)</code></pre>
 <pre><code>## Selecting by Pointdifferential</code></pre>
 <p>Let’s take a look at the table to see who had the worst point differentials this college basketball season.</p>
-<pre class="r"><code>pointdifferential %&gt;% select(School, OverallW, OverallL, Teampointspergame, Opponentpointspergame, Pointdifferential) %&gt;%
+<pre class="r"><code>pointdifferential %&gt;% 
+  select(School, OverallW, OverallL, Teampointspergame, Opponentpointspergame, Pointdifferential) %&gt;%
   gt() %&gt;% 
   cols_label(
     OverallW = &quot;Wins&quot;,
@@ -179,7 +184,7 @@ library(gt)</code></pre>
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#kxvkikhcsc .gt_table {
+#otxjezymuu .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -204,7 +209,7 @@ library(gt)</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_heading {
+#otxjezymuu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -216,7 +221,7 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_title {
+#otxjezymuu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -226,7 +231,7 @@ library(gt)</code></pre>
   border-bottom-width: 0;
 }
 
-#kxvkikhcsc .gt_subtitle {
+#otxjezymuu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -236,13 +241,13 @@ library(gt)</code></pre>
   border-top-width: 0;
 }
 
-#kxvkikhcsc .gt_bottom_border {
+#otxjezymuu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_col_headings {
+#otxjezymuu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -257,7 +262,7 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_col_heading {
+#otxjezymuu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -277,7 +282,7 @@ library(gt)</code></pre>
   overflow-x: hidden;
 }
 
-#kxvkikhcsc .gt_column_spanner_outer {
+#otxjezymuu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -289,15 +294,15 @@ library(gt)</code></pre>
   padding-right: 4px;
 }
 
-#kxvkikhcsc .gt_column_spanner_outer:first-child {
+#otxjezymuu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kxvkikhcsc .gt_column_spanner_outer:last-child {
+#otxjezymuu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kxvkikhcsc .gt_column_spanner {
+#otxjezymuu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -309,7 +314,7 @@ library(gt)</code></pre>
   width: 100%;
 }
 
-#kxvkikhcsc .gt_group_heading {
+#otxjezymuu .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -331,7 +336,7 @@ library(gt)</code></pre>
   vertical-align: middle;
 }
 
-#kxvkikhcsc .gt_empty_group_heading {
+#otxjezymuu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -346,15 +351,15 @@ library(gt)</code></pre>
   vertical-align: middle;
 }
 
-#kxvkikhcsc .gt_from_md > :first-child {
+#otxjezymuu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kxvkikhcsc .gt_from_md > :last-child {
+#otxjezymuu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kxvkikhcsc .gt_row {
+#otxjezymuu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -373,7 +378,7 @@ library(gt)</code></pre>
   overflow-x: hidden;
 }
 
-#kxvkikhcsc .gt_stub {
+#otxjezymuu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -385,7 +390,7 @@ library(gt)</code></pre>
   padding-left: 12px;
 }
 
-#kxvkikhcsc .gt_summary_row {
+#otxjezymuu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -395,7 +400,7 @@ library(gt)</code></pre>
   padding-right: 5px;
 }
 
-#kxvkikhcsc .gt_first_summary_row {
+#otxjezymuu .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -405,7 +410,7 @@ library(gt)</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_grand_summary_row {
+#otxjezymuu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -415,7 +420,7 @@ library(gt)</code></pre>
   padding-right: 5px;
 }
 
-#kxvkikhcsc .gt_first_grand_summary_row {
+#otxjezymuu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -425,11 +430,11 @@ library(gt)</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_striped {
+#otxjezymuu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kxvkikhcsc .gt_table_body {
+#otxjezymuu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -438,7 +443,7 @@ library(gt)</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_footnotes {
+#otxjezymuu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -452,13 +457,13 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_footnote {
+#otxjezymuu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#kxvkikhcsc .gt_sourcenotes {
+#otxjezymuu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -472,46 +477,46 @@ library(gt)</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kxvkikhcsc .gt_sourcenote {
+#otxjezymuu .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#kxvkikhcsc .gt_left {
+#otxjezymuu .gt_left {
   text-align: left;
 }
 
-#kxvkikhcsc .gt_center {
+#otxjezymuu .gt_center {
   text-align: center;
 }
 
-#kxvkikhcsc .gt_right {
+#otxjezymuu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kxvkikhcsc .gt_font_normal {
+#otxjezymuu .gt_font_normal {
   font-weight: normal;
 }
 
-#kxvkikhcsc .gt_font_bold {
+#otxjezymuu .gt_font_bold {
   font-weight: bold;
 }
 
-#kxvkikhcsc .gt_font_italic {
+#otxjezymuu .gt_font_italic {
   font-style: italic;
 }
 
-#kxvkikhcsc .gt_super {
+#otxjezymuu .gt_super {
   font-size: 65%;
 }
 
-#kxvkikhcsc .gt_footnote_marks {
+#otxjezymuu .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="kxvkikhcsc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="otxjezymuu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="6" class="gt_heading gt_title gt_font_normal" style="color: green; text-align: left; font-weight: bold;">Mississippi Valley State had little going for them this season</th>
@@ -631,10 +636,14 @@ library(gt)</code></pre>
 <pre class="r"><code>avgfgpct &lt;- badteams %&gt;%
   summarise(Averagefgpct = mean(`FG%`))</code></pre>
 <p>I made dataframes for 3 teams that won the least amount games from the previous table as well as Nebraska to see where they compare to the rest of the teams.</p>
-<pre class="r"><code>msvalleystate &lt;- badteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
-idaho &lt;- badteams %&gt;% filter(School == &quot;Idaho&quot;)
-scstate &lt;- badteams %&gt;% filter(School == &quot;South Carolina State&quot;)
-neb &lt;- badteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
+<pre class="r"><code>msvalleystate &lt;- badteams %&gt;% 
+  filter(School == &quot;Mississippi Valley State&quot;)
+idaho &lt;- badteams %&gt;% 
+  filter(School == &quot;Idaho&quot;)
+scstate &lt;- badteams %&gt;% 
+  filter(School == &quot;South Carolina State&quot;)
+neb &lt;- badteams %&gt;%
+  filter(School == &quot;Nebraska&quot;)</code></pre>
 <p>Let’s take a look and see how these four teams compare to the rest of the teams with less than 10 wins during the 2020-21 season.</p>
 <pre class="r"><code>ggplot(badteams, aes(x=`OverallW`, y=`FG%`)) +
   geom_hline(yintercept = 0.4229808) +
@@ -663,9 +672,12 @@ First off, my eye goes straight to the top right where I see a team who had 8 wi
   group_by(School) %&gt;%
   filter(OverallW &lt; 10, G &gt; 15, `FT%` &lt; .65) </code></pre>
 <p>I made three dataframes for the two teams that had been previously stated in both graphs (Mississippi Valley State and South Carolina State.) I also added Nebraska in after seeing that they were in this “elite” company.</p>
-<pre class="r"><code>msvalleystateft &lt;- badftshootingteams %&gt;% filter(School == &quot;Mississippi Valley State&quot;)
-scstateft &lt;- badftshootingteams %&gt;% filter(School == &quot;South Carolina State&quot;)
-nebft &lt;- badftshootingteams %&gt;%filter(School == &quot;Nebraska&quot;)</code></pre>
+<pre class="r"><code>msvalleystateft &lt;- badftshootingteams %&gt;% 
+  filter(School == &quot;Mississippi Valley State&quot;)
+scstateft &lt;- badftshootingteams %&gt;% 
+  filter(School == &quot;South Carolina State&quot;)
+nebft &lt;- badftshootingteams %&gt;% 
+  filter(School == &quot;Nebraska&quot;)</code></pre>
 <p>Let’s look at the worst free throw shooting teams in NCAA basketball this past season.</p>
 <pre class="r"><code>ggplot() + geom_bar(data=badftshootingteams, aes(x=reorder(School, `FT%`), weight=`FT%`)) +
   geom_bar(data=msvalleystateft, aes(x=reorder(School, `FT%`), weight=`FT%`), fill = &quot;#046A38&quot;) +
